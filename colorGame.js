@@ -51,6 +51,7 @@ for(var i = 0;  i< colors.length ;i++){
         //Compare Clicked Color to Picked Color
         if(clickedColor === pickedColor){
             messageDisplay.textContent = "Correct";
+            //Only change the reset button text to Play Again when you Win.
             resetButton.textContent = "Play Again?"
             changeColor(clickedColor);
         }
