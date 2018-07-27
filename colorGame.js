@@ -1,30 +1,46 @@
-//list of Hardcoded Colors.
-/*
-var colors =  [
-    "rgb(255, 0, 0)",
-    "rgb(255, 255, 0)",
-    "rgb(0, 255, 0)",
-    "rgb(0, 255, 255)",
-    "rgb(0, 0, 255)",
-    "rgb(255, 0, 255)"
-];
-*/
+//Picks a random color from the hardcoded colors.
+var pickedColor;
 //list of Random Generated Colors.
-var colors =  generateRandomColors(6);
+var colors =  [];
 
 //All the squares in the HTML having class "square".
 var squares = document.querySelectorAll(".square");
-
-//Picks a random color from the hardcoded colors.
-var pickedColor = pickColor();
-
 var colorDisplay = document.getElementById("colorDisplay");
 var messageDisplay = document.querySelector("#messageDisplay");
 
 //When new colors buttons is clicked reset the colors.
 var resetButton = document.getElementById("reset");
 
-resetButton.addEventListener("click", function(){
+init();
+
+function init(){
+    setupSquares();
+    reset();
+}
+
+function setupSquares(){
+
+    for(var i = 0;  i< squares.length ;i++){
+        // Click Event for each Square.
+        squares[i].addEventListener("click",function(){
+            //Background Color for each Clicked Square.
+            var clickedColor = this.style.backgroundColor;
+    
+            //Compare Clicked Color to Picked Color
+            if(clickedColor === pickedColor){
+                messageDisplay.textContent = "Correct";
+                //Only change the reset button text to Play Again when you Win.
+                resetButton.textContent = "Play Again?"
+                changeColor(clickedColor);
+            }
+            else{
+                this.style.backgroundColor = "#232323";
+                messageDisplay.textContent = "Try Again";
+            }
+        })
+    }
+}
+function reset(){
     //alert("Reset Button Clicked");
     colors = generateRandomColors(6);
 
@@ -34,38 +50,19 @@ resetButton.addEventListener("click", function(){
     this.textContent = "New Colors"
     messageDisplay.textContent = ""
     for(var i=0; i<squares.length;i++){
-        squares[i].style.backgroundColor = colors[i];
+    squares[i].style.backgroundColor = colors[i];
     }
-
+}
+resetButton.addEventListener("click", function(){
+   reset();
 })
 
-colorDisplay.textContent = pickedColor;
-
-for(var i = 0;  i< colors.length ;i++){
-    squares[i].style.backgroundColor = colors[i];
-    // Click Event for each Square.
-    squares[i].addEventListener("click",function(){
-        //Background Color for each Clicked Square.
-        var clickedColor = this.style.backgroundColor;
-
-        //Compare Clicked Color to Picked Color
-        if(clickedColor === pickedColor){
-            messageDisplay.textContent = "Correct";
-            //Only change the reset button text to Play Again when you Win.
-            resetButton.textContent = "Play Again?"
-            changeColor(clickedColor);
-        }
-        else{
-            this.style.backgroundColor = "#232323";
-            messageDisplay.textContent = "Try Again";
-        }
-    })
-}
 function changeColor(color){
     for(var i=0; i< squares.length; i++){
         squares[i].style.backgroundColor = color;
     }
 }
+
 function pickColor(){
     var random = Math.floor(Math.random() * colors.length);
     return colors[random];
